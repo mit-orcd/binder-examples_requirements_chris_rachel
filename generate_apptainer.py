@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import argparse
 from pathlib import Path
 
 def parse_requirements(requirements_file):
@@ -49,6 +50,10 @@ From: python:3.10-slim
     print(f"Generated {output_file}")
 
 def main():
+    parser = argparse.ArgumentParser(description='Generate Apptainer definition file from requirements.txt')
+    parser.add_argument('--output', '-o', default='Apptainer.def', help='Output file path')
+    args = parser.parse_args()
+    
     # Get the directory of the current script
     script_dir = Path(__file__).parent
     requirements_file = script_dir / 'requirements.txt'
@@ -58,7 +63,7 @@ def main():
         return
     
     packages = parse_requirements(requirements_file)
-    generate_apptainer_definition(packages)
+    generate_apptainer_definition(packages, args.output)
 
 if __name__ == '__main__':
     main() 
